@@ -1,4 +1,5 @@
 #include "buzzwindow.h"
+#include <Entry.h>
 #include <Path.h>
 #include <stdlib.h>
 #include "enum.h"
