@@ -1,19 +1,12 @@
 # WakeUp!
-Copyright: 1999
-Author of program: Jonathan Villemure
-Version: 1.0
 
-### Description
-
-The Program WakeUp is an application which acts as an alarm clock, and the timer can be set by the user.
+The program WakeUp is an application which acts as an alarm clock, and the timer can be set by the user.
 The application is simple and only requires the user to input the time for when the alarm clock should set off.
-The application has a simple and has an easy to use inteface.
+The application has a simple and easy to use inteface.
 
 # License:
 You are free to re-use, modify or do whatever you want with this code.  However, if the algorithm  is used in one of your applications,
-the author (Jonathan Villemure) wants credit.
-
-
++the author (Jonathan Villemure) wants credit.
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
 
