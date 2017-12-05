@@ -1,0 +1,13 @@
+WakeUp v1.0 Source Code
+Copyright: 1999
+Author of program: Jonathan Villemure
+Version: 1.0
+=========================================================================================================================================
+Description: The Program WakeUp is an application which acts as an alarm clock, and can be set by the user for how long 
+until the "Clock" sets off by making a buzzing sound.
+The application is simple and only requires the user to input the time for when the alarm clock should set off.
+The application has a simple and easy to use inteface.
+=======================================================================================================================================
+License (By Author):
+You are free to re-use, modify or do whatever you want with this code.  However, if you use it in one of your applications,
+I would like to get the credits (in the readme or such).  You may also consider sending a small donation...
