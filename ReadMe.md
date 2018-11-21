@@ -1,5 +1,7 @@
 # WakeUp!
 
+![WakeUp screenshot](WakeUp.png "WakeUp")
+
 WakeUp is an alarm clock that plays a sound set by the user.
 The application has a very simple and easy to use interface.
 
