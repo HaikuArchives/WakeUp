@@ -5,33 +5,46 @@
 #include "enum.h"
 #include <Application.h>
 #include "main.h"
+#include <LayoutBuilder.h>
 //-------------------------------------------------------------------
 BuzzWindow::BuzzWindow()
-	: BWindow(BRect(30, 30, 150, 80), "WakeUp v1.0", B_TITLED_WINDOW, B_NOT_RESIZABLE | B_NOT_ZOOMABLE)
+	:
+	BWindow(BRect(30, 30, 0, 0), "WakeUp v1.0", B_TITLED_WINDOW,
+		B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS)
 {
-	TestButton = new BButton(BRect(1, 1, 35, 1), "", "Test", new BMessage(TEST));
-	AddChild(TestButton);
+	TestButton = new BButton("", "Test", new BMessage(TEST));
 
-	SoundName = new BStringView(BRect(35,10,120,20), "", "Drop sound file!");
-	AddChild(SoundName);
+	SoundName = new BStringView("", "Drop sound file!");
 
-	StartButton = new BButton(BRect(1, 25, 35, 25), "", "Start", new BMessage(START));
-	AddChild(StartButton);
+	StartButton = new BButton("", "Start", new BMessage(START));
 
-	IntervalControl = new BTextControl(BRect(35, 30, 90, 40), "", "", "5", 
-										NULL, B_FOLLOW_NONE, B_WILL_DRAW);
-	IntervalControl->SetDivider(0);
-	AddChild(IntervalControl);
+	IntervalControl = new BTextControl("", "", "5", NULL, B_WILL_DRAW);
+	IntervalControl->SetAlignment(B_ALIGN_LEFT, B_ALIGN_RIGHT);
 
-	Seconds = new BStringView(BRect(90,35,130,45), "", "min");
-	AddChild(Seconds);
+	Seconds = new BStringView("", "min");
 
-	TimeElapsed = new BStringView(BRect(1,5,130,25), "", "0:0:0");
+	TimeElapsed = new BStringView("", "0:0:0");
 	TimeElapsed->SetFont(be_bold_font);
-	TimeElapsed->SetFontSize(20);
+	TimeElapsed->SetFontSize(22);
 	TimeElapsed->SetAlignment(B_ALIGN_CENTER);
 	TimeElapsed->Hide();
-	AddChild(TimeElapsed);
+	
+	BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_ITEM_SPACING)
+		.SetInsets(B_USE_WINDOW_INSETS)
+		.AddGroup(B_HORIZONTAL)
+			.Add(TestButton)
+			.Add(SoundName)
+			.AddGlue()
+			.Add(TimeElapsed)
+			.AddGlue()
+			.End()
+		.AddGroup(B_HORIZONTAL)
+			.Add(StartButton)
+			.AddGroup(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
+				.Add(IntervalControl)
+				.Add(Seconds)
+				.End()
+			.End();
 	
 	MyClock = new AClock();
 	Playing = false; //do we want the thread to run
