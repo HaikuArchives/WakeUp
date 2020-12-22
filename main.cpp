@@ -1,6 +1,6 @@
 #include "main.h"
 //--------------------------------------------------------------
-main()
+int main()
 {
 	Buzzer* Prog;
 	Prog = new Buzzer;
