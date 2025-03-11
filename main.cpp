@@ -1,6 +1,7 @@
 #include "main.h"
 //--------------------------------------------------------------
-int main()
+int
+main()
 {
 	Buzzer* Prog;
 	Prog = new Buzzer;
@@ -8,7 +9,8 @@ int main()
 	return 0;
 }
 //--------------------------------------------------------------
-Buzzer::Buzzer() : BApplication("application/x-vnd-WakeUp")
+Buzzer::Buzzer()
+	: BApplication("application/x-vnd-WakeUp")
 {
 	MainWindow = new BuzzWindow();
 	MainWindow->Show();

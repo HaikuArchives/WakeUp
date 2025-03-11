@@ -4,10 +4,9 @@
 #include <Application.h>
 #include "buzzwindow.h"
 
-class Buzzer : public BApplication
-{
- public:
- 	BuzzWindow* MainWindow;
+class Buzzer : public BApplication {
+public:
+	BuzzWindow* MainWindow;
 	Buzzer();
 };
 

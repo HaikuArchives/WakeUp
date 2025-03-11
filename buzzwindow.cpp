@@ -1,12 +1,12 @@
 #include "buzzwindow.h"
 #include <Alert.h>
+#include <Application.h>
 #include <Entry.h>
+#include <LayoutBuilder.h>
 #include <Path.h>
 #include <stdlib.h>
 #include "enum.h"
-#include <Application.h>
 #include "main.h"
-#include <LayoutBuilder.h>
 
 
 static bool Playing;
@@ -14,9 +14,8 @@ static bool Playing;
 
 //-------------------------------------------------------------------
 BuzzWindow::BuzzWindow()
-	:
-	BWindow(BRect(30, 30, 0, 0), "WakeUp", B_TITLED_WINDOW,
-		B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS)
+	: BWindow(BRect(30, 30, 0, 0), "WakeUp", B_TITLED_WINDOW,
+		  B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS)
 {
 	TestButton = new BButton("", "Test", new BMessage(TEST));
 
@@ -55,25 +54,26 @@ BuzzWindow::BuzzWindow()
 	// clang-format on
 
 	MyClock = new AClock();
-	Playing = false; //do we want the thread to run
+	Playing = false;  // do we want the thread to run
 }
 //-------------------------------------------------------------------
-bool BuzzWindow::QuitRequested()
+bool
+BuzzWindow::QuitRequested()
 {
 	Playing = false;
-	status_t* exitvalue=NULL;
-	wait_for_thread(ClockId, exitvalue); //wait for the clock thread to finish
+	status_t* exitvalue = NULL;
+	wait_for_thread(ClockId, exitvalue);  // wait for the clock thread to finish
 	be_app->PostMessage(B_QUIT_REQUESTED);
 	return true;
 }
 //-------------------------------------------------------------------
-void BuzzWindow::MessageReceived(BMessage* message)
+void
+BuzzWindow::MessageReceived(BMessage* message)
 {
- 	switch (message->what)
- 	{
-   		case B_SIMPLE_DATA:
-   		{// Look for a ref in the message
-		   	entry_ref ref;
+	switch (message->what) {
+		case B_SIMPLE_DATA:
+		{  // Look for a ref in the message
+			entry_ref ref;
 			if (message->FindRef("refs", &ref) != B_OK) {
 				BWindow::MessageReceived(message);
 				break;
@@ -82,8 +82,8 @@ void BuzzWindow::MessageReceived(BMessage* message)
 			BFileGameSound* soundFile = new BFileGameSound(&ref, false);
 			if (soundFile->InitCheck() != B_OK) {
 				delete soundFile;
-				BAlert* not_supported = new BAlert("Error",
-					"This is not a supported sound file.", "OK");
+				BAlert* not_supported
+					= new BAlert("Error", "This is not a supported sound file.", "OK");
 				not_supported->SetType(B_WARNING_ALERT);
 				not_supported->Go();
 				break;
@@ -91,17 +91,16 @@ void BuzzWindow::MessageReceived(BMessage* message)
 
 			MyClock->SetSound(soundFile);
 			SoundName->SetText(ref.name);
-   		}break;
-   		
-   		case TEST:
-   		{
-	   		MyClock->PlaySound();
-   		}break;
-   		
-   		case START:
-   		{
-			if(Playing)
-			{
+		} break;
+
+		case TEST:
+		{
+			MyClock->PlaySound();
+		} break;
+
+		case START:
+		{
+			if (Playing) {
 				Playing = false;
 				SetTitle("WakeUp");
 				StartButton->SetLabel("Start");
@@ -109,14 +108,13 @@ void BuzzWindow::MessageReceived(BMessage* message)
 				SoundName->Show();
 				TestButton->Show();
 			}
-			
-			else
-			{
-				if(atoi(IntervalControl->Text()) < 1) 
+
+			else {
+				if (atoi(IntervalControl->Text()) < 1)
 					return;
 
 				Playing = true;
-				MyClock->SetInterval(atoi(IntervalControl->Text()) * 60000000); //min->ticks
+				MyClock->SetInterval(atoi(IntervalControl->Text()) * 60000000);	 // min->ticks
 				BString TitleString = "WakeUp (";
 				TitleString << IntervalControl->Text() << ")";
 				SetTitle(TitleString.String());
@@ -124,35 +122,36 @@ void BuzzWindow::MessageReceived(BMessage* message)
 				TimeElapsed->Show();
 				SoundName->Hide();
 				TestButton->Hide();
-   				Start();
-   			}
-   		}
-   		
+				Start();
+			}
+		}
+
 		default:
 			BWindow::MessageReceived(message);
 			break;
 	}
 }
 //-------------------------------------------------------------------
-void BuzzWindow::Start()
-{//Start a new thread
-	ClockId = spawn_thread(TimerThread, "TimerThread", B_NORMAL_PRIORITY, (void *) MyClock);
+void
+BuzzWindow::Start()
+{  // Start a new thread
+	ClockId = spawn_thread(TimerThread, "TimerThread", B_NORMAL_PRIORITY, (void*)MyClock);
 	resume_thread(ClockId);
 }
 //-------------------------------------------------------------------
-int32 TimerThread(void *data)
+int32
+TimerThread(void* data)
 {
 	AClock* T = (AClock*)data;
 	T->Restart();
 	BString TimeString;
 	int loop = 0;
 
-	while(Playing)
-	{
+	while (Playing) {
 		snooze(1000000);
-		T->AddTime(1000000); //+1 sec
+		T->AddTime(1000000);  //+1 sec
 		TimeString = "";
-		//h:mm:ss format
+		// h:mm:ss format
 		TimeString << T->GetHour() << ":";
 		int t = T->GetMinute();
 		if (t < 10)
@@ -167,9 +166,8 @@ int32 TimerThread(void *data)
 		((Buzzer*)be_app)->MainWindow->Sync();
 		((Buzzer*)be_app)->MainWindow->Unlock();
 
-		loop += 1000000; //+1 sec
-		if(loop == T->GetInterval())
-		{
+		loop += 1000000;  //+1 sec
+		if (loop == T->GetInterval()) {
 			T->PlaySound();
 			loop = 0;
 		}
@@ -178,4 +176,3 @@ int32 TimerThread(void *data)
 	return 0;
 }
 //-------------------------------------------------------------------
-
