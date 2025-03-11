@@ -8,7 +8,6 @@
 #include <TextControl.h>
 #include <String.h>
 //------------------------------------------------------------------------
-static bool Playing;
 int32 TimerThread(void* data);
 //------------------------------------------------------------------------
 class AClock
