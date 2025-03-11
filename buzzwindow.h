@@ -28,7 +28,7 @@ class AClock
 	void SetInterval(bigtime_t t) {Interval = t;}
 	void PlaySound() {if(Sound != NULL) Sound->StartPlaying();}
 	void AddTime(bigtime_t t) {Temps += t;}
-	short int GetHour() {return Temps/3600000000;}
+	short int GetHour() {return Temps/3600000000UL;}
 	short int GetMinute() {return (Temps/60000000) % 60;}
 	short int GetSecond() {return (Temps/1000000) % 60;}
 };
