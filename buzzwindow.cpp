@@ -34,7 +34,8 @@ BuzzWindow::BuzzWindow()
 	TimeElapsed->SetFontSize(22);
 	TimeElapsed->SetAlignment(B_ALIGN_CENTER);
 	TimeElapsed->Hide();
-	
+
+	// clang-format off
 	BLayoutBuilder::Group<>(this, B_VERTICAL, B_USE_ITEM_SPACING)
 		.SetInsets(B_USE_WINDOW_INSETS)
 		.AddGroup(B_HORIZONTAL)
@@ -51,7 +52,8 @@ BuzzWindow::BuzzWindow()
 				.Add(Seconds)
 				.End()
 			.End();
-	
+	// clang-format on
+
 	MyClock = new AClock();
 	Playing = false; //do we want the thread to run
 }
