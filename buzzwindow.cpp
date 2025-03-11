@@ -8,6 +8,10 @@
 #include "main.h"
 #include <LayoutBuilder.h>
 
+
+static bool Playing;
+
+
 //-------------------------------------------------------------------
 BuzzWindow::BuzzWindow()
 	:
